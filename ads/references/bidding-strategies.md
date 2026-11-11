@@ -1,9 +1,9 @@
 # Bidding Strategy Decisions
 
-**Verified:** 2026-07-11
-**Refresh due:** 2026-08-10
-**Primary source:** `google-smart-bidding-official` — [Google Ads Help: About Smart Bidding](https://support.google.com/google-ads/answer/7065882)
-**Supporting source:** `google-target-roas-official` — [Google Ads Help: About Target ROAS](https://support.google.com/google-ads/answer/6268637)
+**Verified:** 2026-10-07 (ledger entries for the two sources below)
+**Refresh due:** 2026-11-06
+**Primary source:** `google-smart-bidding-official`: [Google Ads Help: About Smart Bidding](https://support.google.com/google-ads/answer/7065882)
+**Supporting source:** `google-target-roas-official`: [Google Ads Help: About Target ROAS](https://support.google.com/google-ads/answer/6268637)
 
 Bidding is a control system, not a ladder unlocked by a universal conversion
 count. Select an eligible strategy from the campaign objective, value signal,
@@ -11,7 +11,9 @@ delivery constraint, and measurement quality shown in the current account UI.
 
 Google describes Target CPA, Target ROAS, Maximize conversions, and Maximize
 conversion value as Smart Bidding strategies that optimize at auction time.
-Availability and labels can change by campaign type; verify them at run time.
+Google also documents a June 2026 label transition that does not change the
+underlying bidding behavior. Availability and labels can change by campaign
+type, so verify them at run time.
 
 ## Decision inputs
 
@@ -46,8 +48,9 @@ auction behavior.
 Derive targets from accepted economics and mature account history. For Google
 Target ROAS, official guidance recommends using business goals and historical
 ROAS and evaluating over conversion cycles; the same page warns that an overly
-high target can restrict traffic. This is platform guidance, not a guaranteed
-outcome.
+high target can restrict traffic. The page also carries an August 2026 bidding
+system update, so the active campaign state remains controlling evidence. This
+is platform guidance, not a guaranteed outcome.
 
 Do not apply fixed target multipliers, fixed minimum conversion counts, or a
 fixed adjustment cadence across accounts. Record the source window, lag maturity,

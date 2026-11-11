@@ -12,7 +12,7 @@ import platform
 import sys
 
 
-EXPECTED_INVENTORY_SHA256 = "48ed1cdd3023bdb9781e7ffe9d987fb9425cc23e2dea053e2da5e8d461e588de"
+EXPECTED_INVENTORY_SHA256 = "cf993e3cecf0f8ad1932b995d8e0f4448e3931b27b1dbe06fd90e5e162de3e1f"
 
 
 def digest(path: Path) -> str:
@@ -83,14 +83,27 @@ def write_receipt(inventory_path: Path, lock_path: Path, evidence_path: Path, re
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--inventory", type=Path, required=True); parser.add_argument("--lock", type=Path, required=True)
-    parser.add_argument("--evidence", type=Path, required=True); parser.add_argument("--pip-report", type=Path, required=True)
-    parser.add_argument("--target-id", required=True); parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--inventory", type=Path, required=True)
+    parser.add_argument("--lock", type=Path, required=True)
+    parser.add_argument("--evidence", type=Path, required=True)
+    parser.add_argument("--pip-report", type=Path, required=True)
+    parser.add_argument("--target-id", required=True)
+    parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    try: write_receipt(args.inventory, args.lock, args.evidence, args.pip_report, args.target_id, args.output)
+    try:
+        write_receipt(
+            args.inventory,
+            args.lock,
+            args.evidence,
+            args.pip_report,
+            args.target_id,
+            args.output,
+        )
     except Exception as exc:
-        print(f"install receipt validation failed: {exc}", file=sys.stderr); return 1
+        print(f"install receipt validation failed: {exc}", file=sys.stderr)
+        return 1
     return 0
 
 
-if __name__ == "__main__": raise SystemExit(main())
+if __name__ == "__main__":
+    raise SystemExit(main())

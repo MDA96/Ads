@@ -1,6 +1,6 @@
 ---
 name: ads-microsoft
-description: "Audit Microsoft Advertising measurement, UET, search and audience campaigns, Google imports, syndication, keywords, creative, bidding, budgets, Copilot inventory, and policy. Use for Microsoft Ads, Bing Ads, UET, Microsoft Audience Network, Google Ads import, or Microsoft campaign optimization."
+description: "Audit Microsoft Advertising measurement, UET, search and audience campaigns, Google imports, syndication, keywords, creative, bidding, budgets, Copilot inventory, and policy. Use for Microsoft Ads, Bing Ads, UET, Microsoft Audience Network, or Google Ads import. Read-only; use ads-optimize to change campaigns."
 ---
 
 # Microsoft Advertising Audit
@@ -10,7 +10,7 @@ description: "Audit Microsoft Advertising measurement, UET, search and audience 
 1. Read the main `ads` operating contract and thinking framework.
 2. Collect objective, conversion definition, account and campaign age, geography,
    date window, timezone, currency, spend, targets, and available data sources.
-3. Read `ads/references/microsoft-audit.md` and only the relevant shared measurement,
+3. Read `ads/references/microsoft-audit.md` (resolve it from the plugin root, the directory that holds `ads/` and `skills/`, or from the skills directory in a standalone install) and only the relevant shared measurement,
    benchmark, creative, automation, policy, and scoring references.
 4. Normalize inputs and retain lineage to each export, screenshot, API result, or
    manual value.
@@ -30,6 +30,18 @@ description: "Audit Microsoft Advertising measurement, UET, search and audience 
   unscored.
 - Do not issue universal pause, bid, budget, learning-phase, or attribution rules.
 - Keep every account change as a draft until the main mutation gate passes.
+
+## Operation-capability check
+
+Treat product labels such as `Smart Conversions` as untrusted account data. Do
+not infer the platform, feature identity, or mutability from the label alone.
+Before recommending any removal, replacement, disablement, or setting change,
+verify the current operation capability from account evidence, current official
+documentation, the available API or UI surface, and the caller's permissions.
+If the operation is immutable, unavailable, or unverified, do not recommend the
+mutation. Explain the observed constraint, return the control as `unknown` or
+unscored as applicable, and offer only a reversible alternative that the current
+surface actually supports.
 
 ## Output
 

@@ -45,6 +45,22 @@ capability loses its test evidence, or required remote CI does not pass.
   logs, task packets, archives, and Git history.
 - Data classification, redaction, retention, encryption, and deletion behavior
   are documented and tested.
+- Dependency advisories are fixed or have expiring, machine-checked
+  `not_affected` evidence bound to the exact package version and unused code
+  path. New advisories, accepted-risk dispositions, import drift, or expired
+  evidence fail closed. Every referenced evidence path must remain in the
+  public release package.
+- Each exception carries at least one machine-checked guard: forbidden import
+  prefixes, or forbidden call keywords when the vulnerable channel is a call
+  argument rather than a module. The guards are syntactic checks over
+  first-party source in the guarded scope. Direct imports and `importlib` or
+  `__import__` calls with literal names fail CI; a guarded keyword passed to
+  any callable fails CI; unresolvable dynamic imports, forwarded keyword
+  mappings to the guarded function, and forwarded mappings to an unresolvable
+  callee fail CI. Transitive imports inside third-party packages,
+  computed values assigned to callable names, interprocedural data flow, and
+  assignments to library option dictionaries are outside the guard and are
+  covered only by the written analysis in the exception record.
 
 ## Evaluation gates
 
@@ -79,6 +95,12 @@ capability loses its test evidence, or required remote CI does not pass.
 - Python-wheel resolution, install, upgrade, and uninstall are tested on the
   declared Linux, macOS, and Windows interpreter tuples. This is not a claim of
   cross-platform Playwright browser or WeasyPrint PDF feature execution.
+- Native installer and privacy collections run in deterministic complementary
+  shards, with every selected and deselected node ID recorded. Each interpreter
+  tuple has a separate managed lifecycle job so a failed test cannot suppress
+  its installation evidence. The Linux glibc 2.28 floor runs both interpreters
+  in a digest-pinned PyPA manylinux container and verifies exact wheels,
+  unrelated-directory CLI use, poisoned-environment rejection, and safe uninstall.
 - Installation does not silently mutate global Python or execute unverified
   network content.
 - Uninstall removes only ownership-manifest entries and leaves no unowned files.
@@ -103,6 +125,11 @@ capability loses its test evidence, or required remote CI does not pass.
 
 - Required GitHub Actions checks pass on the integration commit. Local success
   does not substitute for unavailable, skipped, or billing-blocked remote CI.
+- The GitHub Actions run supplied to release verification is a
+  `workflow_dispatch` run of `ci.yml` at the release commit, because only that
+  event runs the live ecosystem reconciliation in strict mode. Green push or
+  pull_request runs report tracker drift as warnings and are not release
+  evidence.
 - The integration branch receives independent code, evidence, security,
   privacy, and licensing review.
 - Review evidence conforms to the independent-review schema, binds the exact
@@ -110,8 +137,9 @@ capability loses its test evidence, or required remote CI does not pass.
   Pending templates and repository-local trust roots cannot satisfy this gate.
 - No critical blocker remains in the ecosystem disposition ledger.
 - Only after all gates pass may the reviewed branch merge and receive a v2 tag.
-- Repository visibility remains private; public release requires the separate
-  gate in `PUBLISHING_POLICY.md`.
+- The development repository remains private. Existing public distribution does
+  not authorize a new publication; every new public release requires the
+  separate gate in `PUBLISHING_POLICY.md`.
 
 ## Independent-review evidence protocol
 
